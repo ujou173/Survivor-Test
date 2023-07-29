@@ -36,13 +36,17 @@ public class Reposition : MonoBehaviour
         // player가 X축 이동을 할 때
         if (diffX > diffY)
         {
-          transform.Translate(Vector3.right * dirX * 60);
+          transform.Translate(Vector3.right * dirX * 40);
         }
         // player가 Y축 이동을 할 때
         else if (diffX < diffY)
         {
           transform.Translate(Vector3.up * dirY * 40);
         }
+        // else
+        // {
+        //   transform.Translate(dirX * 60, dirY * 40, 0);
+        // }
         break;
       case "Enemy":
 

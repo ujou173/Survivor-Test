@@ -33,4 +33,11 @@ public class Enemy : MonoBehaviour
     // 충돌에 의한 물리 속도가 이동에 영향을 주지 않도록 값을 0으로 고정
     rigid.velocity = Vector2.zero;
   }
+
+  void LateUpdate()
+  {
+    // Enemy가 플레이어의 위치에 따라 바라보는 방향이 바뀌도록 설정
+    // Enemy의 x위치가 플레이어의 x위치보다 크면 뒤를 돌아보도록 구현
+    spriter.flipX = target.position.x < rigid.position.x;
+  }
 }

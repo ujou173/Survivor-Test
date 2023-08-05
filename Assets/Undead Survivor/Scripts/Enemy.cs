@@ -45,4 +45,9 @@ public class Enemy : MonoBehaviour
     // Enemy의 x위치가 플레이어의 x위치보다 크면 뒤를 돌아보도록 구현
     spriter.flipX = target.position.x < rigid.position.x;
   }
+
+  void OnEnable()
+  {
+    target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+  }
 }

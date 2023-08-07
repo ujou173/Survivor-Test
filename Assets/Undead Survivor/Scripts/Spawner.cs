@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
 
   public Transform[] spawnPoint;
+  public SpawnData[] spawnData;
 
   int level;
   float timer;
@@ -33,4 +34,13 @@ public class Spawner : MonoBehaviour
     GameObject enemy = GameManager.instance.pool.Get(level);
     enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
   }
+}
+
+[System.Serializable]
+public class SpawnData
+{
+  public int spriteType;
+  public float spawnTime;
+  public int health;
+  public float speed;
 }

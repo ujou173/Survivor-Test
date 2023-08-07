@@ -36,6 +36,7 @@ public class Spawner : MonoBehaviour
   }
 }
 
+// [System.Serializable] -> inspector에서 인식 할 수 있도록하는 직렬화 과정. 클래스 위에 아래와 같이 작성하면 해당 클래스를 직렬화 한것으로 인식한다.
 [System.Serializable]
 public class SpawnData
 {

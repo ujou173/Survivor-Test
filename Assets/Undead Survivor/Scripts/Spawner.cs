@@ -20,9 +20,10 @@ public class Spawner : MonoBehaviour
   {
 
     timer += Time.deltaTime;
-    level = Mathf.FloorToInt(GameManager.instance.gameTime / 10f);
+    level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1);
 
-    if (timer > (level == 0 ? 0.5f : 0.2f))
+    // level이 1일 경우 inspector에서 SpawnData의 첫번째 항목(0.7초의 스폰 10의 체력 등등), level이 2일 경우 두번째 항목으로 자동 전환 됨
+    if (timer > spawnData[level].spawnTime)
     {
       timer = 0;
       Spawn();
@@ -31,8 +32,10 @@ public class Spawner : MonoBehaviour
 
   void Spawn()
   {
-    GameObject enemy = GameManager.instance.pool.Get(level);
+    GameObject enemy = GameManager.instance.pool.Get(0);
     enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+    // Enemy의 Init() 함수를 가져와서 사용
+    enemy.GetComponent<Enemy>().Init(spawnData[level]);
   }
 }
 
@@ -40,8 +43,8 @@ public class Spawner : MonoBehaviour
 [System.Serializable]
 public class SpawnData
 {
-  public int spriteType;
   public float spawnTime;
+  public int spriteType;
   public int health;
   public float speed;
 }

@@ -7,19 +7,30 @@ public class Enemy : MonoBehaviour
   // 플레이어를 추적할 속도
   public float speed;
 
+  // 현재 체력
+  public float health;
+
+  // 최대 체력
+  public float maxHealth;
+
+  // 스프라이트, animator를 바꾸기 위한 컨트롤러 선언 / 스프라이트가 여러개일 수 있으므로 배열로 선언
+  public RuntimeAnimatorController[] animCon;
+
   // 추적할 대상(플레이어), 물리를 사용해서 추적할 것이기 때문에 Rigidbody2D 사용
   public Rigidbody2D target;
 
   // 몬스터가 살아있는지 죽어있는지 판별하기 위한 bool 변수
-  bool isLive = true;
+  bool isLive;
 
   Rigidbody2D rigid;
+  Animator anim;
   SpriteRenderer spriter;
 
 
   void Awake()
   {
     rigid = GetComponent<Rigidbody2D>();
+    anim = GetComponent<Animator>();
     spriter = GetComponent<SpriteRenderer>();
   }
 
@@ -49,5 +60,16 @@ public class Enemy : MonoBehaviour
   void OnEnable()
   {
     target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+    isLive = true;
+    health = maxHealth;
+  }
+
+  // 레벨링에 따른 enemy의 상태를 직접 컨트롤하기 위한 함수
+  public void Init(SpawnData data)
+  {
+    anim.runtimeAnimatorController = animCon[data.spriteType];
+    speed = data.speed;
+    maxHealth = data.health;
+    health = data.health;
   }
 }

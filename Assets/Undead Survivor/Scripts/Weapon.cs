@@ -60,8 +60,23 @@ public class Weapon : MonoBehaviour
     {
         for (int index = 0; index < count; index++)
         {
-            Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-            bullet.parent = transform;
+            Transform bullet;
+
+            // 기존: 항상 ObjectPool에서 prefabs를 가져옴
+            // 변경: 기존 오브젝트를 먼저 활용하고 모자란 것만 ObjectPool에서 prefabs를 가져옴
+            if (index < transform.childCount)
+            {
+                bullet = transform.GetChild(index);
+            }
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                bullet.parent = transform;
+            }
+
+            // 레벨업 등으로 무기 추가 시 위치 초기화
+            bullet.localPosition = Vector3.zero;
+            bullet.localRotation = Quaternion.identity;
 
             // 위치 조절
             Vector3 rotVec = Vector3.forward * 360 * index / count;

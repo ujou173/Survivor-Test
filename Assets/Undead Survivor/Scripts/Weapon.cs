@@ -21,7 +21,7 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                transform.Rotate(Vector3.back * speed * Time.deltaTime);
+                transform.Rotate(Vector3.forward * speed * Time.deltaTime);
                 break;
             default:
                 break;
@@ -47,6 +47,12 @@ public class Weapon : MonoBehaviour
         {
             Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
             bullet.parent = transform;
+
+            // 위치 조절
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            bullet.Rotate(rotVec);
+            bullet.Translate(bullet.up * 1.5f, Space.World);
+
 
             // Init(데미지, 관통)에서 -1은 무한 관통을 의미
             bullet.GetComponent<Bullet>().Init(damage, -1);

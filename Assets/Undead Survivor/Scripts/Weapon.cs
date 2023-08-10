@@ -26,6 +26,21 @@ public class Weapon : MonoBehaviour
             default:
                 break;
         }
+
+        // 테스트용 코드
+        if (Input.GetButtonDown("Jump"))
+        {
+            LevelUp(20, 5);
+        }
+    }
+
+    public void LevelUp(float damage, int count)
+    {
+        this.damage = damage;
+        this.count += count;
+
+        if (id == 0)
+            WeaponPosition();
     }
 
     public void Init()

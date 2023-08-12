@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
   public Vector2 inputVec;
   public float speed;
 
+  // 유니티가 만든 스크립트 말고 직접 작성한 스크립트도 컴포넌트처럼 사용 가능
+  public Scanner scanner;
+
   Rigidbody2D rigid;
   SpriteRenderer spriter;
   Animator anim;
@@ -18,6 +21,9 @@ public class Player : MonoBehaviour
     rigid = GetComponent<Rigidbody2D>();
     spriter = GetComponent<SpriteRenderer>();
     anim = GetComponent<Animator>();
+
+    // 유니티가 만든 스크립트 말고 직접 작성한 스크립트도 컴포넌트처럼 사용 가능
+    scanner = GetComponent<Scanner>();
   }
 
   void FixedUpdate()

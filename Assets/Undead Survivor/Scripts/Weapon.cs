@@ -105,8 +105,8 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
 
-            // Init(데미지, 관통)에서 -1은 무한 관통을 의미
-            bullet.GetComponent<Bullet>().Init(damage, -1);
+            // Init(데미지, 관통)에서 -100은 무한 관통을 의미, 음수(-1 이하)면 무한 관통
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero);
         }
     }
 
@@ -116,7 +116,15 @@ public class Weapon : MonoBehaviour
         if (!player.scanner.nearestTarget)
             return;
 
+        // 총알이 나가야 하는 방향 설정
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 dir = targetPos - transform.position;
+        dir = dir.normalized;
+
         Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
         bullet.position = transform.position;
+        // 회전은 Vector가 아닌 Quaternion을 이용 / FromToRotation(축, 목표) -> 지정된 축을 중심으로 목표를 항해 회전하는 함수
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
     }
 }

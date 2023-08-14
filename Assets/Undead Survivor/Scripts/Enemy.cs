@@ -39,7 +39,8 @@ public class Enemy : MonoBehaviour
   // Update is called once per frame
   void FixedUpdate()
   {
-    if (!isLive)
+    // 동작중인 애니메이션의 이름이 Hit일 경우 예외처리를 통해 아래쪽의 물리 동작을 잠시 중단 시킴 / 예외처리를 하지 않을 경우, 넉백도 물리고 enemy의 이동도 물리기 때문에 넉백이 적용되지 않음
+    if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
       return;
 
     // Enemy가 움직일 방향 => 플레이어의 위치와 Enemy의 위치의 차이를 이용해 방향을 구함

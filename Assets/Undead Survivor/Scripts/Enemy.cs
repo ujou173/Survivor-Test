@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
   Rigidbody2D rigid;
   Animator anim;
   SpriteRenderer spriter;
+  WaitForFixedUpdate wait;
 
 
   void Awake()
@@ -32,6 +33,7 @@ public class Enemy : MonoBehaviour
     rigid = GetComponent<Rigidbody2D>();
     anim = GetComponent<Animator>();
     spriter = GetComponent<SpriteRenderer>();
+    wait = new WaitForFixedUpdate();
   }
 
   // Update is called once per frame
@@ -81,16 +83,38 @@ public class Enemy : MonoBehaviour
 
     // 체력에서 무기의 데미지 만큼 -
     health -= collision.GetComponent<Bullet>().damage;
+    // 코루틴 함수 호출
+    StartCoroutine(KnockBack());
+
 
     if (health > 0)
     {
       // 아직 살아있을 경우
+      anim.SetTrigger("Hit");
     }
     else
     {
       // 죽었을 경우
       Dead();
     }
+  }
+
+  // 코루틴 함수 : 비동기적으로 실행되는 함수(?)
+  IEnumerator KnockBack()
+  {
+    // yield 외친다. 선언 비슷한 것
+    // yield return null; // 1 프레임 쉬기
+    // yield return new WaitForSeconds(2f); // 2초 쉬기
+    yield return wait; // 위에 선언한 wait를 이용해 다음 하나의 물리 프레임까지 쉬기
+
+    // 플레이어의 위치 구하기
+    Vector3 playerPos = GameManager.instance.player.transform.position;
+    // 넉백 시킬 방향 구하기
+    Vector3 dirVec = transform.position - playerPos;
+
+    // Impulse(즉각적인 물리 힘 적용)
+    rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+
   }
 
   void Dead()

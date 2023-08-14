@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
   bool isLive;
 
   Rigidbody2D rigid;
+  Collider2D coll;
   Animator anim;
   SpriteRenderer spriter;
   WaitForFixedUpdate wait;
@@ -31,6 +32,7 @@ public class Enemy : MonoBehaviour
   void Awake()
   {
     rigid = GetComponent<Rigidbody2D>();
+    coll = GetComponent<Collider2D>();
     anim = GetComponent<Animator>();
     spriter = GetComponent<SpriteRenderer>();
     wait = new WaitForFixedUpdate();
@@ -64,6 +66,15 @@ public class Enemy : MonoBehaviour
   {
     target = GameManager.instance.player.GetComponent<Rigidbody2D>();
     isLive = true;
+    /* 시체 상태 이후 다시 오브젝트를 재활용하기 위해 값을 초기화 시킴 */
+    // 콜리전 다시 적용
+    coll.enabled = true;
+    // 물리 다시 적용
+    rigid.simulated = true;
+    // 내렸던 layer 값을 다시 2로 복구
+    spriter.sortingOrder = 2;
+    anim.SetBool("Dead", false);
+    /* 시체 상태 이후 다시 오브젝트를 재활용하기 위해 값을 초기화 시킴 */
     health = maxHealth;
   }
 
@@ -96,7 +107,14 @@ public class Enemy : MonoBehaviour
     else
     {
       // 죽었을 경우
-      Dead();
+      isLive = false;
+      // 콜리전 제거
+      coll.enabled = false;
+      // 물리 제거
+      rigid.simulated = false;
+      // 시체의 layer를 한단계 내려 살아있는 얘들을 가리지 않도록 함
+      spriter.sortingOrder = 1;
+      anim.SetBool("Dead", true);
     }
   }
 

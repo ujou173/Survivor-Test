@@ -89,8 +89,8 @@ public class Enemy : MonoBehaviour
 
   void OnTriggerEnter2D(Collider2D collision)
   {
-    // 충돌한 것이 Bullet 태그가 아닐 경우에는 그대로 return
-    if (!collision.CompareTag("Bullet"))
+    // 충돌한 것이 Bullet 태그가 아닐 경우에는 그대로 return / 살아있을 경우라는 조건을 추가하여 사망 로직이 연달아 실행되는 것을 방지
+    if (!collision.CompareTag("Bullet") || !isLive)
       return;
 
     // 체력에서 무기의 데미지 만큼 -
@@ -115,6 +115,8 @@ public class Enemy : MonoBehaviour
       // 시체의 layer를 한단계 내려 살아있는 얘들을 가리지 않도록 함
       spriter.sortingOrder = 1;
       anim.SetBool("Dead", true);
+      GameManager.instance.kill++;
+      GameManager.instance.GetExp();
     }
   }
 

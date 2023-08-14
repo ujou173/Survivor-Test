@@ -35,4 +35,15 @@ public class GameManager : MonoBehaviour
       gameTime = maxGameTime;
     }
   }
+
+  public void GetExp()
+  {
+    exp++;
+
+    if (exp == nextExp[level])
+    {
+      level++;
+      exp = 0;
+    }
+  }
 }

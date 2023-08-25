@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
     instance = this;
   }
 
+  void Start()
+  {
+    health = maxHealth;
+  }
+
   void Update()
   {
 

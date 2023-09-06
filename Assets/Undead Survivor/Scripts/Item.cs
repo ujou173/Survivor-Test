@@ -33,7 +33,12 @@ public class Item : MonoBehaviour
             // 근접과 원거리 무기는 동일한 로직을 사용할 것이기 때문에 붙여서 사용. 다수의 case문을 붙여서 로직을 실행 할 수 있음
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
-
+                if (level == 0)
+                {
+                    GameObject newWeapon = new GameObject();
+                    weapon = newWeapon.AddComponent<Weapon>();
+                    weapon.Init(data);
+                }
                 break;
             case ItemData.ItemType.Glove:
 

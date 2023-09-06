@@ -16,13 +16,7 @@ public class Weapon : MonoBehaviour
 
     void Awake()
     {
-        // 부모 오브젝트에서 변수 가져오기
-        player = GetComponentInParent<Player>();
-    }
-
-    void Start()
-    {
-        Init();
+        player = GameManager.instance.player;
     }
 
     // Update is called once per frame
@@ -61,8 +55,29 @@ public class Weapon : MonoBehaviour
             WeaponPosition();
     }
 
-    public void Init()
+    public void Init(ItemData data)
     {
+        // Basic Set
+        name = "Weapon " + data.itemId;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+
+        // Property Set
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+
+        // id와 prefabsId를 맞추기 위한 for문
+        // 스크립트블 오브젝트의 독립성을 위해서 인덱스가 아닌 프리펩을 이용
+        for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        {
+            if (data.projectile == GameManager.instance.pool.prefabs[index])
+            {
+                prefabId = index;
+                break;
+            }
+        }
+
         switch (id)
         {
             case 0:
